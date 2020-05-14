@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "323480511074",
+    "firebase_url": "https://hydransearch-362d1.firebaseio.com",
+    "project_id": "hydransearch-362d1",
+    "storage_bucket": "hydransearch-362d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323480511074:android:d7fdaff4412f234471273b",
+        "android_client_info": {
+          "package_name": "com.example.hydransearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323480511074-kff8puqo649sefemaqt1rehvnq65npr5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwTHRgFGBNKFpSO8garQlAz2YAPqgibOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323480511074-kff8puqo649sefemaqt1rehvnq65npr5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
