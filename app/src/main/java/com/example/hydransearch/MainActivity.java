@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS;
     private FusedLocationProviderClient fusedLocationClient;
     DatabaseReference mDatabase;
-    Button btn_grifos;
+    Button btn_grifos,btn_siniestros;
 
 
     @Override
@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         btn_grifos = (Button) findViewById(R.id.btn_grifos);
+        btn_siniestros = (Button) findViewById(R.id.btn_siniestros);
         permiso();
+
 
 
         btn_grifos.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        btn_siniestros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapsSiniestro.class);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -73,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("latitud: ", +location.getLatitude() + "longitud: " + location.getLongitude());
 
 
-                             Map<String, Object> latlang = new HashMap<>();
-                            latlang.put("latitud", location.getLatitude());
-                            latlang.put("longitud", location.getLongitude());
-                            mDatabase.child("usuarios").push().setValue(latlang);
+                            // Map<String, Object> latlang = new HashMap<>();
+                           // latlang.put("latitud", location.getLatitude());
+                           // latlang.put("longitud", location.getLongitude());
+                         //   mDatabase.child("siniestro").push().setValue(latlang);
                         }
                     }
                 });
