@@ -2,7 +2,6 @@ package com.example.hydransearch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,14 +18,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS;
     private FusedLocationProviderClient fusedLocationClient;
     DatabaseReference mDatabase;
-    Button btn_grifos,btn_siniestros;
+    Button btn_grifos,btn_siniestros, btn_agregar;
 
 
     @Override
@@ -37,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         btn_grifos = (Button) findViewById(R.id.btn_grifos);
         btn_siniestros = (Button) findViewById(R.id.btn_siniestros);
+        btn_agregar = (Button) findViewById(R.id.btn_agregar);
         permiso();
 
 
@@ -46,12 +43,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
+
+
             }
         });
         btn_siniestros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapsSiniestro.class);
+                Intent intent = new Intent(getApplicationContext(), MapsSinister.class);
+                startActivity(intent);
+            }
+        });
+        btn_agregar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Ingresa.class);
                 startActivity(intent);
             }
         });

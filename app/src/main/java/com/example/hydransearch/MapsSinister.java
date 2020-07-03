@@ -3,12 +3,8 @@ package com.example.hydransearch;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,9 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static java.lang.Math.toRadians;
 
-public class MapsSiniestro<b, a> extends FragmentActivity implements OnMapReadyCallback {
+public class MapsSinister extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     public DatabaseReference mDatabase;
@@ -40,10 +35,10 @@ public class MapsSiniestro<b, a> extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps_siniestro);
+        setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
 
     }

@@ -3,10 +3,14 @@ package com.example.hydransearch;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.icu.text.AlphabeticIndex;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -16,7 +20,6 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -30,12 +33,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.BreakIterator;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+
+    private CheckBox checksiniestro, checkgrifos, checkestados;
+    private Button btnFiltrar, btnGenerarRuta;
     public DatabaseReference mDatabase;
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>();
     private ArrayList<Marker> reaTimeMarkers = new ArrayList<>();
@@ -51,9 +56,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
 
+        checksiniestro = findViewById(R.id.opcionSiniestro);
+        checkgrifos = findViewById(R.id.opcionGrifo);
+        checkestados = findViewById(R.id.opcionEstado);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -72,56 +80,122 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         posicion();
-        ver_siniestro();
-        mDatabase.child("usuarios").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (Marker marker : reaTimeMarkers) {
-                    marker.remove();
-                }
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Mapatraer mp = snapshot.getValue(Mapatraer.class);
-                    Double latitud = mp.getLatitud();
-                    Double longitud = mp.getLongitud();
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(new LatLng(latitud, longitud));
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo));
-                    tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
 
 
-                }
-                reaTimeMarkers.clear();
-                reaTimeMarkers.addAll(tmpRealTimeMarkers);
-            }
 
+        checkgrifos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    mDatabase.child("usuarios").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                            for (Marker marker : reaTimeMarkers) {
+                                marker.remove();
+                            }
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Mapatraer mp = snapshot.getValue(Mapatraer.class);
+                                double latitud = mp.getLatitud();
+                                double longitud = mp.getLongitud();
+                                String estado =mp.getEstado();
+                                int id =mp.getID();
+                                int caudal =mp.getCaudal();
+                                String numCadena= String.valueOf(id);
+                                String caudalst= String.valueOf(caudal);
+                                String bastidor =mp.getBastidor();
+                                LatLng s = new LatLng(latitud, longitud);
+                                MarkerOptions markerOptions = new MarkerOptions();
+                                if (estado.equals("bueno")){
+                                    markerOptions.title("ID "+numCadena + " Caudal: " + caudalst + " Bastidor: "+ bastidor);
+                                    markerOptions.position(s);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo));}
+
+                                else {
+                                    markerOptions.title(estado);
+                                    markerOptions.position(s);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo_malo));
+
+                                }
+
+
+                                tmpRealTimeMarkers.add(mMap.addMarker(markerOptions));
+
+
+                            }
+                            reaTimeMarkers.clear();
+                            reaTimeMarkers.addAll(tmpRealTimeMarkers);
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    new CountDownTimer(30000, 1000) {
+                        BreakIterator mTextField;
+
+                        public void onTick(long millisUntilFinished) {
+
+                            mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                            posicion();
+                        }
+
+                        public void onFinish() {
+                            mTextField.setText("done!");
+                            posicion();
+                            start();
+                        }
+                    };
+                }
+                else
+                {
+                    reaTimeMarkers.clear();
+                    tmpRealTimeMarkers.clear();
+                    mMap.clear();
+                }
             }
         });
 
-        new CountDownTimer(30000, 1000) {
-            BreakIterator mTextField;
+        checksiniestro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            public void onTick(long millisUntilFinished) {
-
-                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                posicion();
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    ver_siniestro();
+                }
+                else
+                {
+                    mMap.clear();
+                }
             }
+        });
+        checkestados.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-            public void onFinish() {
-                mTextField.setText("done!");
-                posicion();
-                start();
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    mDatabase.child("usuarios").removeValue();
+                }
+                else
+                {
+                    mMap.clear();
+                }
             }
-        };
+        });
+
 
     }
 
@@ -156,10 +230,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Mapatraer mp = snapshot.getValue(Mapatraer.class);
                     double latitud = mp.getLatitud();
                     double longitud = mp.getLongitud();
+                    String estado =mp.getEstado();
                     LatLng s = new LatLng(latitud, longitud);
                     MarkerOptions markerOptions = new MarkerOptions();
+                    if (estado.equals("bueno")){
+                    markerOptions.title(estado);
                     markerOptions.position(s);
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.fire));
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.firemen));}
+
+                    else {
+                        markerOptions.title(estado);
+                        markerOptions.position(s);
+                        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.fire));
+
+                    }
+
+
                     tmpRealTimeMarkers2.add(mMap.addMarker(markerOptions));
 
 

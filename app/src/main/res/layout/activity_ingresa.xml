@@ -6,4 +6,103 @@
     android:layout_height="match_parent"
     tools:context=".Ingresa">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="132dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/lat" />
+
+    <Button
+        android:id="@+id/mBottonSubir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="33dp"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="@+id/Longitud"
+        app:layout_constraintTop_toBottomOf="@+id/Longitud" />
+
+    <EditText
+        android:id="@+id/Estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="15dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Caudal" />
+
+    <EditText
+        android:id="@+id/Bastidor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Estado" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="11dp"
+        android:text="Latitud Longitud"
+        app:layout_constraintBottom_toBottomOf="@+id/lat"
+        app:layout_constraintEnd_toStartOf="@+id/lat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lat" />
+
+    <EditText
+        android:id="@+id/ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="11dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/Caudal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ID" />
+
+    <TextView
+        android:id="@+id/lat"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="72dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/Longitud"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/Estado" />
+
+    <TextView
+        android:id="@+id/Longitud"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="40dp"
+        android:text="TextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/lat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

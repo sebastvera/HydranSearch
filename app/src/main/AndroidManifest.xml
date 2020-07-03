@@ -32,7 +32,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsSiniestro"
+            android:name=".MapsSinister"
             android:label="@string/title_activity_maps_siniestro"></activity>
         <activity android:name=".Ingresa" />
         <activity

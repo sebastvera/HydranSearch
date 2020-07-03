@@ -1,9 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:id="@+id/mapLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity" />
+    android:orientation="vertical"
+    android:outlineSpotShadowColor="#00E90B0B">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginEnd="-3dp"
+        android:layout_marginRight="-3dp"
+        android:layout_marginBottom="222dp"
+        android:text="menu"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        tools:text="menu" />
+
+    <CheckBox
+        android:id="@+id/opcionEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginBottom="144dp"
+        android:checked="false"
+        android:text="Estados"
+        android:textColor="#C427DF" />
+
+    <CheckBox
+        android:id="@+id/opcionSiniestro"
+        android:layout_width="105dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="150dp"
+        android:layout_marginBottom="146dp"
+        android:layout_toLeftOf="@id/opcionEstado"
+        android:checked="false"
+        android:text="Siniestro"
+        android:textColor="#2196F3"
+        tools:text="siniestro" />
+
+    <CheckBox
+        android:id="@+id/opcionGrifo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="149dp"
+        android:layout_toStartOf="@+id/opcionMetal"
+        android:layout_toLeftOf="@+id/opcionMetal"
+        android:checked="false"
+        android:text="Grifos"
+        android:textColor="#4BE224"
+        tools:text="Grifos" />
+
+    <Button
+        android:id="@+id/btnFiltrarMapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginEnd="51dp"
+        android:layout_marginRight="51dp"
+        android:layout_marginBottom="50dp"
+        android:layout_toStartOf="@+id/btnGenerarRuta"
+        android:layout_toLeftOf="@+id/btnGenerarRuta"
+        android:text="" />
+
+    <Button
+        android:id="@+id/btnGenerarRuta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="27dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginBottom="50dp"
+        android:text="" />
+
+    <fragment
+        android:id="@+id/map2"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="525dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="258dp"
+        tools:context=".MapsActivity" />
+
+</RelativeLayout>
