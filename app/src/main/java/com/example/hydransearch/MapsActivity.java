@@ -8,6 +8,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.BreakIterator;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -40,7 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private CheckBox checksiniestro, checkgrifos, checkestados;
-    private Button btnFiltrar, btnGenerarRuta;
+    private Button ir_siniestro;
     public DatabaseReference mDatabase;
     private ArrayList<Marker> tmpRealTimeMarkers = new ArrayList<>();
     private ArrayList<Marker> reaTimeMarkers = new ArrayList<>();
@@ -58,10 +61,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
-
+        ir_siniestro = (Button) findViewById(R.id.ir_siniestro);
         checksiniestro = findViewById(R.id.opcionSiniestro);
-        checkgrifos = findViewById(R.id.opcionGrifo);
-        checkestados = findViewById(R.id.opcionEstado);
+        checkgrifos = findViewById(R.id.Grifo);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -86,6 +88,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setZoomControlsEnabled(true);
         posicion();
+        ir_siniestro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDatabase.child("Siniestro").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        for (Marker marker : reaTimeMarkers2) {
+                            marker.remove();
+                        }
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Mapatraer mp = snapshot.getValue(Mapatraer.class);
+                            double latitud = mp.getLatitud();
+                            double longitud = mp.getLongitud();
+                            LatLng s = new LatLng(latitud, longitud);
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(s);
+                            float zoomLevel = 18.0f;
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(s,zoomLevel));
+
+
+
+
+                            tmpRealTimeMarkers2.add(mMap.addMarker(markerOptions));
+
+
+                        }
+                        reaTimeMarkers2.clear();
+                        reaTimeMarkers2.addAll(tmpRealTimeMarkers2);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+            }
+
+
+        });
 
 
 
@@ -95,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
                 {
-                    mDatabase.child("usuarios").addValueEventListener(new ValueEventListener() {
+                    mDatabase.child("Grifos").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -115,12 +158,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 LatLng s = new LatLng(latitud, longitud);
                                 MarkerOptions markerOptions = new MarkerOptions();
                                 if (estado.equals("bueno")){
-                                    markerOptions.title("ID "+numCadena + " Caudal: " + caudalst + " Bastidor: "+ bastidor);
+                                    markerOptions.title("ID "+ numCadena + " Caudal: " + caudalst + " Bastidor: "+ bastidor);
+                                    markerOptions.position(s);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo));}
+                                else if (estado.equals("Bueno")){
+                                    markerOptions.title("ID "+ numCadena + " Caudal: " + caudalst + " Bastidor: "+ bastidor);
                                     markerOptions.position(s);
                                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo));}
 
                                 else {
-                                    markerOptions.title(estado);
+
+                                    markerOptions.title("ID "+numCadena + " Caudal: " + caudalst + " Bastidor: "+ bastidor);
                                     markerOptions.position(s);
                                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.grifo_malo));
 
@@ -181,21 +229,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-        checkestados.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
-                    mDatabase.child("usuarios").removeValue();
-                }
-                else
-                {
-                    mMap.clear();
-                }
-            }
-        });
-
 
     }
 
@@ -219,7 +252,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void ver_siniestro() {
-        mDatabase.child("siniestro").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("Siniestro").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -230,20 +263,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Mapatraer mp = snapshot.getValue(Mapatraer.class);
                     double latitud = mp.getLatitud();
                     double longitud = mp.getLongitud();
-                    String estado =mp.getEstado();
                     LatLng s = new LatLng(latitud, longitud);
                     MarkerOptions markerOptions = new MarkerOptions();
-                    if (estado.equals("bueno")){
-                    markerOptions.title(estado);
                     markerOptions.position(s);
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.firemen));}
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.fire));
 
-                    else {
-                        markerOptions.title(estado);
-                        markerOptions.position(s);
-                        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.fire));
 
-                    }
 
 
                     tmpRealTimeMarkers2.add(mMap.addMarker(markerOptions));
