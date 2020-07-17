@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private int MY_PERMISSIONS_REQUEST_READ_CONTACTS;
     private FusedLocationProviderClient fusedLocationClient;
     DatabaseReference mDatabase;
-    Button btn_grifos,btn_siniestros, btn_agregar;
+    Button btn_grifos,btn_siniestros, btn_modificar;
 
 
     @Override
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         btn_grifos = (Button) findViewById(R.id.btn_grifos);
-        btn_agregar = (Button) findViewById(R.id.btn_agregar);
+        btn_modificar = (Button) findViewById(R.id.btn_agregar);
         permiso();
 
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_agregar.setOnClickListener(new View.OnClickListener() {
+        btn_modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Ingresa.class);

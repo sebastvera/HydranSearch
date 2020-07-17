@@ -53,28 +53,7 @@ public class Ingresa extends AppCompatActivity {
 
     }
 
-    private void ver_estados() {
-        String caudal1 = caudal.getText().toString();
-        int value=0;
-        if (!"".equals(caudal1)){
-           value = Integer.parseInt(caudal1);
-        }
-        String bastidor_aux = bastidor.getText().toString();
-
-
-        if ((bastidor_aux.equals("bueno") || (bastidor_aux.equals("Bueno"))) && (value > 7)) {
-            String estado2 = "Bueno";
-            estado.setText(estado2);
-       }
-        else if (bastidor_aux.equals("malo") || (value < 7)||bastidor_aux.equals("Malo")){
-            String escudo_mal = "Malo";
-            estado.setText(escudo_mal);
-
-        }
-
-    }
-
-    private void modificacion() {
+       private void modificacion() {
         modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,19 +76,26 @@ public class Ingresa extends AppCompatActivity {
         });
     }
 
-    private void Posicion() {
-        mfused.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            latid.setText(""+location.getLatitude());
-                            longi.setText(""+location.getLongitude());
 
-                        }
-                    }
-                });
+    private void ver_estados() {
+        String caudal1 = caudal.getText().toString();
+        int value=0;
+        if (!"".equals(caudal1)){
+            value = Integer.parseInt(caudal1);
+        }
+        String bastidor_aux = bastidor.getText().toString();
+
+
+        if ((bastidor_aux.equals("bueno") || (bastidor_aux.equals("Bueno"))) && (value >= 7)) {
+            String estado2 = "Bueno";
+            estado.setText(estado2);
+        }
+        else if (bastidor_aux.equals("malo") || (value < 7)||bastidor_aux.equals("Malo")){
+            String escudo_mal = "Malo";
+            estado.setText(escudo_mal);
+
+        }
+
     }
 
     private void buscar() {
@@ -149,6 +135,21 @@ public class Ingresa extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void Posicion() {
+        mfused.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            latid.setText(""+location.getLatitude());
+                            longi.setText(""+location.getLongitude());
+
+                        }
+                    }
+                });
     }
 
 }

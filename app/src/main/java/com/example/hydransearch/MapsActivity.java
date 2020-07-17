@@ -190,7 +190,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-                    new CountDownTimer(30000, 1000) {
+                    new CountDownTimer(20000, 1000) {
                         BreakIterator mTextField;
 
                         public void onTick(long millisUntilFinished) {
